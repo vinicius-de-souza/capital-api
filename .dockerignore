@@ -1,0 +1,10 @@
+# Exclui artefatos de build
+**/bin/
+**/obj/
+
+# Exclui arquivos do Git e de IDE
+.git
+.gitignore
+.vs
+.vscode
+*.user
