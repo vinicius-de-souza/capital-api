@@ -23,22 +23,22 @@ public class ObterResumoCarteiraQueryHandlerTests
 
         var listaAtivos = new List<Ativo>
         {
-            Ativo.CriarNovo("PETR4", 10, 30),
-            Ativo.CriarNovo("MGLU3", 100, 5)
+            Ativo.CriarNovo("PETR4", 10, 30), // ValorTotalAlocado = 300
+            Ativo.CriarNovo("MGLU3", 100, 5)  // ValorTotalAlocado = 500
         };
 
         _repositorioAtivoMock.Setup(r => r.ObterTodosAsync()).ReturnsAsync(listaAtivos);
 
         var resultado = await _handler.Handle(query, CancellationToken.None);
 
-        Assert.Equal(2, resultado.Count);
+        Assert.Equal(2, resultado.Ativos.Count);
 
-        var dtoPetr4 = resultado.First(a => a.Codigo == "PETR4");
-        Assert.Equal(10, dtoPetr4.QuantidadeTotal);
-        Assert.Equal(30, dtoPetr4.PrecoMedioCompra);
+        Assert.Equal(800, resultado.ValorTotalCarteira);
+
+        var dtoPetr4 = resultado.Ativos.First(a => a.Codigo == "PETR4");
         Assert.Equal(300, dtoPetr4.ValorTotalAlocado);
 
-        var dtoMglu3 = resultado.First(a => a.Codigo == "MGLU3");
+        var dtoMglu3 = resultado.Ativos.First(a => a.Codigo == "MGLU3");
         Assert.Equal(500, dtoMglu3.ValorTotalAlocado);
     }
 }
