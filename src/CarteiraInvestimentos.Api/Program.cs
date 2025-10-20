@@ -25,6 +25,7 @@ builder.Services.AddMediatR(cfg =>
 
 builder.Services.AddScoped<IRepositorioAtivo, RepositorioAtivo>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+builder.Services.AddScoped<ITransacaoRepository, TransacaoRepository>();
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();

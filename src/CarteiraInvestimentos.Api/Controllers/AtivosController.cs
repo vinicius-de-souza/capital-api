@@ -1,6 +1,7 @@
 ﻿using CarteiraInvestimentos.Application.Commands.ComprarAtivo;
 using CarteiraInvestimentos.Application.Commands.VenderAtivo;
 using CarteiraInvestimentos.Application.DTOs;
+using CarteiraInvestimentos.Application.Queries.ObterExtrato;
 using CarteiraInvestimentos.Application.Queries.ObterResumoCarteira;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -56,17 +57,33 @@ public class AtivosController : ControllerBase
     }
 
     /// <summary>
-    /// Obtém o resumo da carteira de investimentos
+    /// Obtém o resumo da carteira de investimentos 
     /// </summary>
-    /// <returns>Lista de ativos com quantidade, preço médio e valor alocado</returns>
+    /// <returns>O valor total da carteira e a lista de saldos de ativos</returns>
     /// <response code="200">Resumo retornado com sucesso</response>
     /// <response code="500">Erro interno do servidor</response>
     [HttpGet("resumo")]
-    [ProducesResponseType(typeof(List<AtivoDto>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ResumoCarteiraDto), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> ObterResumoCarteira()
     {
         var query = new ObterResumoCarteiraQuery();
+        var resultado = await _mediator.Send(query); 
+        return Ok(resultado);
+    }
+
+    /// <summary>
+    /// Obtém o extrato de todas as transações 
+    /// </summary>
+    /// <returns>Uma lista de todas as transações (compras e vendas) ordenadas por data</returns>
+    /// <response code="200">Extrato retornado com sucesso</response>
+    /// <response code="500">Erro interno do servidor</response>
+    [HttpGet("extrato")]
+    [ProducesResponseType(typeof(List<TransacaoDto>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status500InternalServerError)]
+    public async Task<IActionResult> ObterExtrato()
+    {
+        var query = new ObterExtratoQuery();
         var resultado = await _mediator.Send(query);
         return Ok(resultado);
     }
