@@ -68,7 +68,7 @@ public class AtivosController : ControllerBase
     public async Task<IActionResult> ObterResumoCarteira()
     {
         var query = new ObterResumoCarteiraQuery();
-        var resultado = await _mediator.Send(query); 
+        var resultado = await _mediator.Send(query);
         return Ok(resultado);
     }
 
